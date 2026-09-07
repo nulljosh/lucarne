@@ -1,7 +1,7 @@
 # Lucarne roadmap
 
 ## Next
-- [ ] ASC name check (asc-name-creator), then app record + workflow ship-ios/ship-mac
+- [ ] Ship: `asc validate`, then workflow ship-ios / ship-mac (ASC 6809355192 exists; macOS platform still to add)
 - [ ] Screenshots (mac + iphone) for README and landing
 - [ ] kmp/ port for Android/Windows/Linux (see native fleet rollout)
 - [ ] Restore tabs across launches

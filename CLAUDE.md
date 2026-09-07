@@ -20,4 +20,4 @@ xcodebuild build -project Lucarne.xcodeproj -scheme Lucarne -destination 'generi
 
 - WebKit does the browsing. Don't add a rendering, history or cookie layer; if the OS has it, use it.
 - Tabs are in memory. Persist only when someone asks.
-- ASC record not created yet. Run asc-name-creator first; "Lucarne" is likely taken.
+- ASC record 6809355192 (created 2026-09-07, iOS platform; add macOS in ASC when shipping Mac). Bundle com.nulljosh.lucarne.
