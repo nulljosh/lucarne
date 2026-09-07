@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lucarne — a browser that writes no browser code</title>
-<meta name="description" content="A WebKit browser for Mac, iPhone and iPad. Address bar, back, forward, reload, tabs. Nothing else until there's a reason.">
+<meta name="description" content="A WebKit browser for Mac, iPhone and iPad. Address bar, back, forward, reload, tabs. Nothing else until there's a reason. This page is the demo.">
 <meta name="theme-color" content="#1d1d1f">
 <meta property="og:title" content="Lucarne — a web browser">
 <meta property="og:description" content="A text field and a WebKit view. Mac, iPhone, iPad.">
@@ -12,59 +12,47 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <style>
 @import url("https://heyitsmejosh.com/tokens.css");
-@import url("devices.css");
-:root{--ink:#1d1d1f;--paper:#f5f5f7;--accent:var(--ink);--link:var(--ink);--bg2:var(--paper);--border:#d2d2d7;--btn-fg:#fff;}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--accent:var(--paper);--link:var(--paper);--bg2:#2c2c2e;--border:#3a3a3c;--btn-fg:var(--ink);}}
-:root[data-theme="dark"]{--accent:var(--paper);--link:var(--paper);--bg2:#2c2c2e;--border:#3a3a3c;--btn-fg:var(--ink);}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased}
-a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
-.container{max-width:800px;margin:0 auto;padding:0 2rem}
-.hero{padding:clamp(5rem,12vw,8rem) 0 5.5rem;text-align:center;background:var(--bg2)}
-.hero-icon{width:88px;height:88px;border-radius:20px}
-h1{font-size:clamp(2.2rem,6vw,3.2rem);line-height:1.1;letter-spacing:-0.02em;margin-top:1.25rem}
-.tagline{color:var(--text2);font-size:1.2rem;margin:1.25rem auto 2.25rem;max-width:32rem}
-.cta{display:inline-flex;gap:.75rem;flex-wrap:wrap;justify-content:center}
-.btn{display:inline-block;padding:.8rem 1.75rem;border-radius:6px;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:var(--btn-fg)}
-.btn.ghost{background:transparent;color:var(--link)}
-section{padding:5rem 0;border-top:1px solid var(--border)}
-h2{font-size:1.65rem;letter-spacing:-0.01em;margin-bottom:1.25rem}
-p+p{margin-top:1rem}
-.demo{margin:2.5rem auto 0;--device-w:min(100%,640px)}
-.demo-bar{display:flex;gap:8px;align-items:center;padding:8px 12px;background:#fff;border-bottom:1px solid #e5e5e5;color:#6e6e73;font-size:.85rem}
-.demo-bar input{flex:1;background:#f5f5f7;border:0;border-radius:6px;padding:5px 10px;color:#1d1d1f;font:inherit;outline:none;min-width:0}
-.demo-bar button{background:none;border:0;color:#6e6e73;font:inherit;font-size:1.1rem;cursor:pointer;padding:0 4px}
-.demo figcaption{margin-top:10px;font-size:.9rem;color:var(--text2)}
-.demo iframe{display:block;width:100%;height:420px;border:0;background:#fff}
-footer{border-top:1px solid var(--border);padding:2.5rem 0;color:var(--text2);font-size:.9rem}
+:root{--ink:#1d1d1f;--paper:#f5f5f7;--bar:#fff;--field:#f5f5f7;--border:#d2d2d7;--dim:#6e6e73;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bar:#1e1e20;--field:#2c2c2e;--border:#3a3a3c;--dim:#98989d;}}
+:root[data-theme="dark"]{--bar:#1e1e20;--field:#2c2c2e;--border:#3a3a3c;--dim:#98989d;}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:6px;padding:8px 10px;background:var(--bar);border-bottom:1px solid var(--border);flex:none}
+.bar .brand{display:flex;align-items:center;gap:8px;font-weight:600;margin-right:6px;color:var(--text);text-decoration:none}
+.bar .brand img{width:22px;height:22px;border-radius:6px}
+.bar button{background:none;border:0;color:var(--dim);font:inherit;font-size:1.05rem;cursor:pointer;padding:4px 7px;border-radius:6px;line-height:1}
+.bar button:hover{background:var(--field);color:var(--text)}
+.bar button:disabled{opacity:.35;cursor:default;background:none}
+.bar input{flex:1;min-width:0;background:var(--field);border:0;border-radius:8px;padding:7px 12px;color:var(--text);font:inherit;font-size:.95rem;outline:none}
+.bar input:focus{box-shadow:0 0 0 2px var(--accent)}
+.bar .src{color:var(--dim);font-size:.9rem;text-decoration:none;padding:4px 8px;border-radius:6px}
+.bar .src:hover{background:var(--field);color:var(--text)}
+iframe{flex:1;width:100%;border:0;background:#fff}
+@media (max-width:560px){.bar .brand span,.bar .src{display:none}}
 </style>
 </head>
 <body>
-<header class="hero"><div class="container">
-  <img class="hero-icon" src="icon.svg" alt="">
-  <h1>Lucarne</h1>
-  <p class="tagline">A web browser is a text field and a WebKit view. Everything else is opinion.</p>
-  <div class="cta"><a class="btn" href="https://github.com/nulljosh/lucarne">Source</a><a class="btn ghost" href="https://github.com/nulljosh/lucarne#run">Build it</a></div>
-  <figure class="device device-mac demo">
-    <div class="device-screen">
-      <form class="demo-bar" id="bar"><button type="button" id="back" aria-label="Back">‹</button><input id="addr" value="heyitsmejosh.com" aria-label="Address" autocomplete="off" spellcheck="false"><button type="submit" aria-label="Go">↻</button></form>
-      <iframe id="page" src="https://heyitsmejosh.com/" title="Lucarne demo" loading="lazy" sandbox="allow-scripts allow-forms allow-same-origin allow-popups"></iframe>
-    </div>
-    <figcaption>The same rule as the app: a host loads, words search. Words search Wikipedia, because DuckDuckGo refuses to be framed. Sites that refuse framing stay blank here; the real app has no such limit.</figcaption>
-  </figure>
-  <script>
-  // Mirrors resolve() in LucarneApp.swift, with Wikipedia standing in for the search engine.
-  function resolve(s){s=s.trim();if(!s)return null;if(s.includes('://'))return s;if(!s.includes(' ')&&s.includes('.'))return 'https://'+s;return 'https://en.wikipedia.org/wiki/Special:Search?search='+encodeURIComponent(s)}
-  const f=document.getElementById('bar'),a=document.getElementById('addr'),p=document.getElementById('page');
-  f.addEventListener('submit',e=>{e.preventDefault();const u=resolve(a.value);if(u){p.src=u;a.value=u.replace(/^https?:\/\//,'')}});
-  document.getElementById('back').addEventListener('click',()=>{try{p.contentWindow.history.back()}catch(_){}});
-  </script>
-</div></header>
-<section><div class="container">
-  <h2>What it does</h2>
-  <p>One window, one page, an address bar, back, forward, reload, tabs. Mac, iPhone and iPad from one SwiftUI file. Type a host and it loads. Type words and it searches DuckDuckGo.</p>
-  <p>Rendering, JavaScript, cookies, gestures, autofill: WebKit already does all of it. Lucarne adds nothing on top until there is a reason to. No bookmarks, no sync, no telemetry.</p>
-</div></section>
-<footer><div class="container">Built by <a href="https://heyitsmejosh.com">Joshua Trommel</a>. MIT.</div></footer>
+<form class="bar" id="bar" role="navigation" aria-label="Browser bar">
+  <a class="brand" href="/" aria-label="Lucarne home"><img src="icon.svg" alt=""><span>Lucarne</span></a>
+  <button type="button" id="back" aria-label="Back">‹</button>
+  <button type="button" id="fwd" aria-label="Forward">›</button>
+  <input id="addr" value="lucarne.heyitsmejosh.com" aria-label="Search or enter address" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Search or enter address">
+  <button type="submit" id="go" aria-label="Reload">↻</button>
+  <a class="src" href="https://github.com/nulljosh/lucarne">Source</a>
+</form>
+<iframe id="page" src="start.html" title="Lucarne" sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-top-navigation-by-user-activation"></iframe>
+<script>
+// Mirrors resolve() in LucarneApp.swift; Wikipedia stands in for the search engine because DuckDuckGo refuses framing.
+function resolve(s){s=s.trim();if(!s)return null;if(s.includes('://'))return s;if(!s.includes(' ')&&s.includes('.'))return 'https://'+s;return 'https://en.wikipedia.org/wiki/Special:Search?search='+encodeURIComponent(s)}
+const f=document.getElementById('bar'),a=document.getElementById('addr'),p=document.getElementById('page');
+const hist=['start.html'];let i=0;
+function show(u){p.src=u;a.value=u==='start.html'?'lucarne.heyitsmejosh.com':u.replace(/^https?:\/\//,'');document.getElementById('back').disabled=i===0;document.getElementById('fwd').disabled=i===hist.length-1}
+f.addEventListener('submit',e=>{e.preventDefault();const u=resolve(a.value);if(!u)return;hist.splice(i+1);hist.push(u);i=hist.length-1;show(u);a.blur()});
+document.getElementById('back').addEventListener('click',()=>{if(i>0){i--;show(hist[i])}});
+document.getElementById('fwd').addEventListener('click',()=>{if(i<hist.length-1){i++;show(hist[i])}});
+a.addEventListener('focus',()=>a.select());
+show('start.html');
+</script>
 </body>
 </html>
