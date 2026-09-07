@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nook — a browser that writes no browser code</title>
+<meta name="description" content="A WebKit browser for Mac, iPhone and iPad. Address bar, back, forward, reload, tabs. Nothing else until there's a reason.">
+<meta name="theme-color" content="#1d1d1f">
+<meta property="og:title" content="Nook — a web browser">
+<meta property="og:description" content="A text field and a WebKit view. Mac, iPhone, iPad.">
+<meta property="og:type" content="website">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+@import url("https://heyitsmejosh.com/tokens.css");
+@import url("devices.css");
+:root{--ink:#1d1d1f;--paper:#f5f5f7;--accent:var(--ink);--link:var(--ink);--bg2:var(--paper);--border:#d2d2d7;--btn-fg:#fff;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--accent:var(--paper);--link:var(--paper);--bg2:#2c2c2e;--border:#3a3a3c;--btn-fg:var(--ink);}}
+:root[data-theme="dark"]{--accent:var(--paper);--link:var(--paper);--bg2:#2c2c2e;--border:#3a3a3c;--btn-fg:var(--ink);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
+.container{max-width:800px;margin:0 auto;padding:0 2rem}
+.hero{padding:clamp(5rem,12vw,8rem) 0 5.5rem;text-align:center;background:var(--bg2)}
+.hero-icon{width:88px;height:88px;border-radius:20px}
+h1{font-size:clamp(2.2rem,6vw,3.2rem);line-height:1.1;letter-spacing:-0.02em;margin-top:1.25rem}
+.tagline{color:var(--text2);font-size:1.2rem;margin:1.25rem auto 2.25rem;max-width:32rem}
+.cta{display:inline-flex;gap:.75rem;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-block;padding:.8rem 1.75rem;border-radius:6px;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:var(--btn-fg)}
+.btn.ghost{background:transparent;color:var(--link)}
+section{padding:5rem 0;border-top:1px solid var(--border)}
+h2{font-size:1.65rem;letter-spacing:-0.01em;margin-bottom:1.25rem}
+p+p{margin-top:1rem}
+.demo{margin:2.5rem auto 0;--device-w:min(100%,640px)}
+.demo-bar{display:flex;gap:8px;align-items:center;padding:8px 12px;background:#fff;border-bottom:1px solid #e5e5e5;color:#6e6e73;font-size:.85rem}
+.demo-bar span{flex:1;background:#f5f5f7;border-radius:6px;padding:4px 10px;color:#1d1d1f;text-align:left}
+.demo iframe{display:block;width:100%;height:360px;border:0;background:#fff}
+footer{border-top:1px solid var(--border);padding:2.5rem 0;color:var(--text2);font-size:.9rem}
+</style>
+</head>
+<body>
+<header class="hero"><div class="container">
+  <img class="hero-icon" src="icon.svg" alt="">
+  <h1>Nook</h1>
+  <p class="tagline">A web browser is a text field and a WebKit view. Everything else is opinion.</p>
+  <div class="cta"><a class="btn" href="https://github.com/nulljosh/nook">Source</a><a class="btn ghost" href="https://github.com/nulljosh/nook#run">Build it</a></div>
+  <figure class="device device-mac demo">
+    <div class="device-screen">
+      <div class="demo-bar">‹ ›<span>duckduckgo.com</span>↻</div>
+      <iframe src="https://duckduckgo.com/html/" title="Nook demo" loading="lazy" sandbox="allow-scripts allow-forms allow-same-origin allow-popups"></iframe>
+    </div>
+  </figure>
+</div></header>
+<section><div class="container">
+  <h2>What it does</h2>
+  <p>One window, one page, an address bar, back, forward, reload, tabs. Mac, iPhone and iPad from one SwiftUI file. Type a host and it loads. Type words and it searches DuckDuckGo.</p>
+  <p>Rendering, JavaScript, cookies, gestures, autofill: WebKit already does all of it. Nook adds nothing on top until there is a reason to. No bookmarks, no sync, no telemetry.</p>
+</div></section>
+<footer><div class="container">Built by <a href="https://heyitsmejosh.com">Joshua Trommel</a>. MIT.</div></footer>
+</body>
+</html>

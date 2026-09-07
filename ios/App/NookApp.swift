@@ -23,7 +23,8 @@ func resolve(_ input: String) -> URL? {
 }
 
 @MainActor
-final class Page: NSObject, ObservableObject, WKNavigationDelegate {
+final class Page: NSObject, ObservableObject, Identifiable, WKNavigationDelegate {
+    let id = UUID()
     let web = WKWebView()
     @Published var address = ""
     @Published var title = ""
@@ -31,11 +32,11 @@ final class Page: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canBack = false
     @Published var canForward = false
 
-    override init() {
+    init(_ start: String = "https://duckduckgo.com") {
         super.init()
         web.navigationDelegate = self
         web.allowsBackForwardNavigationGestures = true
-        go("https://duckduckgo.com")
+        go(start)
     }
 
     func go(_ input: String) {
@@ -45,7 +46,7 @@ final class Page: NSObject, ObservableObject, WKNavigationDelegate {
 
     private func sync() {
         address = web.url?.absoluteString ?? address
-        title = web.title ?? ""
+        title = web.title.flatMap { $0.isEmpty ? nil : $0 } ?? web.url?.host() ?? "New Tab"
         loading = web.isLoading
         canBack = web.canGoBack
         canForward = web.canGoForward
@@ -54,6 +55,21 @@ final class Page: NSObject, ObservableObject, WKNavigationDelegate {
     func webView(_ w: WKWebView, didFinish n: WKNavigation!) { sync() }
     func webView(_ w: WKWebView, didFail n: WKNavigation!, withError e: Error) { sync() }
     func webView(_ w: WKWebView, didFailProvisionalNavigation n: WKNavigation!, withError e: Error) { sync() }
+}
+
+/// Tab list. ponytail: in-memory only, no restore across launches; persist URLs when that matters.
+@MainActor
+final class Tabs: ObservableObject {
+    @Published var pages: [Page] = [Page()]
+    @Published var current: UUID
+    init() { current = UUID(); current = pages[0].id }
+    var page: Page { pages.first { $0.id == current } ?? pages[0] }
+    func add() { let p = Page(); pages.append(p); current = p.id }
+    func close(_ p: Page) {
+        guard pages.count > 1, let i = pages.firstIndex(where: { $0.id == p.id }) else { return }
+        pages.remove(at: i)
+        if current == p.id { current = pages[min(i, pages.count - 1)].id }
+    }
 }
 
 #if os(macOS)
@@ -71,37 +87,73 @@ struct WebView: UIViewRepresentable {
 #endif
 
 struct BrowserView: View {
-    @StateObject private var page = Page()
+    @StateObject private var tabs = Tabs()
+    var body: some View { PageView(tabs: tabs, page: tabs.page).id(tabs.current) }
+}
+
+struct PageView: View {
+    @ObservedObject var tabs: Tabs
+    @ObservedObject var page: Page
     @FocusState private var editing: Bool
 
     var body: some View {
-        WebView(web: page.web)
-            .ignoresSafeArea(edges: .bottom)
-            .navigationTitle(page.title)
-            .toolbar {
-                ToolbarItemGroup(placement: .navigation) {
-                    Button { page.web.goBack() } label: { Image(systemName: "chevron.left") }
-                        .disabled(!page.canBack).keyboardShortcut("[", modifiers: .command)
-                    Button { page.web.goForward() } label: { Image(systemName: "chevron.right") }
-                        .disabled(!page.canForward).keyboardShortcut("]", modifiers: .command)
-                }
-                ToolbarItem(placement: .principal) {
-                    TextField("Search or enter address", text: $page.address)
-                        .textFieldStyle(.roundedBorder)
-                        .focused($editing)
-                        .onSubmit { page.go(page.address); editing = false }
-                        #if os(iOS)
-                        .keyboardType(.webSearch).textInputAutocapitalization(.never).autocorrectionDisabled()
-                        #endif
-                        .frame(minWidth: 240, idealWidth: 600)
-                }
-                ToolbarItem(placement: .primaryAction) {
-                    Button { if page.loading { page.web.stopLoading() } else { page.web.reload() } } label: {
-                        Image(systemName: page.loading ? "xmark" : "arrow.clockwise")
-                    }.keyboardShortcut("r", modifiers: .command)
-                }
+        VStack(spacing: 0) {
+            if tabs.pages.count > 1 { TabStrip(tabs: tabs) }
+            WebView(web: page.web).ignoresSafeArea(edges: .bottom)
+        }
+        .navigationTitle(page.title)
+        .toolbar {
+            ToolbarItemGroup(placement: .navigation) {
+                Button { page.web.goBack() } label: { Image(systemName: "chevron.left") }
+                    .disabled(!page.canBack).keyboardShortcut("[", modifiers: .command)
+                Button { page.web.goForward() } label: { Image(systemName: "chevron.right") }
+                    .disabled(!page.canForward).keyboardShortcut("]", modifiers: .command)
             }
-            .wrappedInNavigation()
+            ToolbarItem(placement: .principal) {
+                TextField("Search or enter address", text: $page.address)
+                    .textFieldStyle(.roundedBorder)
+                    .focused($editing)
+                    .onSubmit { page.go(page.address); editing = false }
+                    #if os(iOS)
+                    .keyboardType(.webSearch).textInputAutocapitalization(.never).autocorrectionDisabled()
+                    #endif
+                    .frame(minWidth: 240, idealWidth: 600)
+            }
+            ToolbarItemGroup(placement: .primaryAction) {
+                Button { if page.loading { page.web.stopLoading() } else { page.web.reload() } } label: {
+                    Image(systemName: page.loading ? "xmark" : "arrow.clockwise")
+                }.keyboardShortcut("r", modifiers: .command)
+                Button { tabs.add() } label: { Image(systemName: "plus") }
+                    .keyboardShortcut("t", modifiers: .command)
+                Button { tabs.close(page) } label: { Image(systemName: "xmark.square") }
+                    .keyboardShortcut("w", modifiers: .command).disabled(tabs.pages.count == 1)
+            }
+        }
+        .wrappedInNavigation()
+    }
+}
+
+struct TabStrip: View {
+    @ObservedObject var tabs: Tabs
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 4) {
+                ForEach(tabs.pages) { p in TabChip(tabs: tabs, page: p) }
+            }.padding(.horizontal, 8).padding(.vertical, 6)
+        }
+        .background(.bar)
+    }
+}
+
+struct TabChip: View {
+    @ObservedObject var tabs: Tabs
+    @ObservedObject var page: Page
+    var body: some View {
+        Button { tabs.current = page.id } label: {
+            Text(page.title).lineLimit(1).frame(maxWidth: 160)
+                .padding(.horizontal, 10).padding(.vertical, 5)
+                .background(tabs.current == page.id ? Color.accentColor.opacity(0.18) : .clear, in: Capsule())
+        }.buttonStyle(.plain)
     }
 }
 

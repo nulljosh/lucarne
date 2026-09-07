@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="200" viewBox="0 0 720 200" font-family="-apple-system,Helvetica,sans-serif" font-size="13">
+  <rect width="720" height="200" fill="#fff"/>
+  <g stroke="#d1d5db" stroke-width="1.5" fill="#f5f5f7">
+    <rect x="40" y="40" width="180" height="60" rx="12"/>
+    <rect x="270" y="40" width="180" height="60" rx="12"/>
+    <rect x="500" y="40" width="180" height="60" rx="12"/>
+    <rect x="270" y="130" width="180" height="50" rx="12"/>
+  </g>
+  <g stroke="#9ca3af" stroke-width="1.5" fill="none">
+    <line x1="220" y1="70" x2="270" y2="70"/><line x1="450" y1="70" x2="500" y2="70"/><line x1="360" y1="100" x2="360" y2="130"/>
+  </g>
+  <g fill="#1d1d1f" text-anchor="middle">
+    <text x="130" y="66" font-weight="600">Toolbar</text><text x="130" y="84" fill="#6e6e73">address, back, forward, tabs</text>
+    <text x="360" y="66" font-weight="600">Page</text><text x="360" y="84" fill="#6e6e73">WKWebView + nav delegate</text>
+    <text x="590" y="66" font-weight="600">WebKit</text><text x="590" y="84" fill="#6e6e73">render, JS, cookies, history</text>
+    <text x="360" y="151" font-weight="600">resolve()</text><text x="360" y="169" fill="#6e6e73">text → URL or DuckDuckGo</text>
+  </g>
+</svg>
