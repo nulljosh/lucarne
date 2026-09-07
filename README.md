@@ -4,7 +4,7 @@
 
 A web browser is a text field and a WebKit view. Everything else is opinion. A lucarne is a small window in a roof; this is a small window on the web.
 
-Lucarne is the starting point: one window, one page, an address bar, back, forward, reload. Mac, iPhone and iPad from one SwiftUI file. Type a host and it loads, type words and it searches DuckDuckGo. No tabs, no bookmarks, no sync, no telemetry. Those get added when there's a reason.
+Lucarne is the starting point: one window, one page, an address bar, back, forward, reload, tabs. Mac, iPhone and iPad from one SwiftUI file. Type a host and it loads, type words and it searches DuckDuckGo. No bookmarks, no sync, no telemetry. Those get added when there's a reason.
 
 ## Run
 
