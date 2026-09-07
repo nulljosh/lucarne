@@ -6,6 +6,7 @@ struct LucarneApp: App {
     var body: some Scene {
         WindowGroup { BrowserView() }
         #if os(macOS)
+        .defaultSize(width: 1100, height: 760)
         .commands { CommandGroup(replacing: .newItem) {} }
         #endif
     }
@@ -88,7 +89,13 @@ struct WebView: UIViewRepresentable {
 
 struct BrowserView: View {
     @StateObject private var tabs = Tabs()
-    var body: some View { PageView(tabs: tabs, page: tabs.page).id(tabs.current) }
+    var body: some View {
+        #if os(iOS)
+        NavigationStack { PageView(tabs: tabs, page: tabs.page).id(tabs.current) }
+        #else
+        PageView(tabs: tabs, page: tabs.page).id(tabs.current)
+        #endif
+    }
 }
 
 struct PageView: View {
@@ -98,18 +105,11 @@ struct PageView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            if tabs.pages.count > 1 { TabStrip(tabs: tabs) }
-            WebView(web: page.web).ignoresSafeArea(edges: .bottom)
-        }
-        .navigationTitle(page.title)
-        .toolbar {
-            ToolbarItemGroup(placement: .navigation) {
+            HStack(spacing: 8) {
                 Button { page.web.goBack() } label: { Image(systemName: "chevron.left") }
                     .disabled(!page.canBack).keyboardShortcut("[", modifiers: .command)
                 Button { page.web.goForward() } label: { Image(systemName: "chevron.right") }
                     .disabled(!page.canForward).keyboardShortcut("]", modifiers: .command)
-            }
-            ToolbarItem(placement: .principal) {
                 TextField("Search or enter address", text: $page.address)
                     .textFieldStyle(.roundedBorder)
                     .focused($editing)
@@ -117,9 +117,6 @@ struct PageView: View {
                     #if os(iOS)
                     .keyboardType(.webSearch).textInputAutocapitalization(.never).autocorrectionDisabled()
                     #endif
-                    .frame(minWidth: 240, idealWidth: 600)
-            }
-            ToolbarItemGroup(placement: .primaryAction) {
                 Button { if page.loading { page.web.stopLoading() } else { page.web.reload() } } label: {
                     Image(systemName: page.loading ? "xmark" : "arrow.clockwise")
                 }.keyboardShortcut("r", modifiers: .command)
@@ -128,8 +125,16 @@ struct PageView: View {
                 Button { tabs.close(page) } label: { Image(systemName: "xmark.square") }
                     .keyboardShortcut("w", modifiers: .command).disabled(tabs.pages.count == 1)
             }
+            .buttonStyle(.borderless)
+            .padding(.horizontal, 10).padding(.vertical, 6)
+            .background(.bar)
+            if tabs.pages.count > 1 { TabStrip(tabs: tabs) }
+            WebView(web: page.web).ignoresSafeArea(edges: .bottom)
         }
-        .wrappedInNavigation()
+        .navigationTitle(page.title)
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }
 
@@ -154,16 +159,5 @@ struct TabChip: View {
                 .padding(.horizontal, 10).padding(.vertical, 5)
                 .background(tabs.current == page.id ? Color.accentColor.opacity(0.18) : .clear, in: Capsule())
         }.buttonStyle(.plain)
-    }
-}
-
-extension View {
-    /// iOS needs a NavigationStack to host a toolbar; macOS toolbars attach to the window directly.
-    @ViewBuilder func wrappedInNavigation() -> some View {
-        #if os(iOS)
-        NavigationStack { self.navigationBarTitleDisplayMode(.inline) }
-        #else
-        self
-        #endif
     }
 }
