@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleExecutable</key><string>$(EXECUTABLE_NAME)</string>
-    <key>CFBundleName</key><string>Nook</string>
-    <key>CFBundleDisplayName</key><string>Nook</string>
-    <key>CFBundleIdentifier</key><string>com.nulljosh.nook</string>
+    <key>CFBundleName</key><string>Lucarne</string>
+    <key>CFBundleDisplayName</key><string>Lucarne</string>
+    <key>CFBundleIdentifier</key><string>com.nulljosh.lucarne</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleVersion</key><string>$(CURRENT_PROJECT_VERSION)</string>
     <key>CFBundleShortVersionString</key><string>$(MARKETING_VERSION)</string>

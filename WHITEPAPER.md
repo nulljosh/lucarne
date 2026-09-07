@@ -1,12 +1,12 @@
-# Nook Technical Whitepaper
+# Lucarne Technical Whitepaper
 
 **v1.0.0** | September 2026
 
-A web browser that writes no browser code. Nook is a `WKWebView` inside a SwiftUI toolbar, shipped for macOS, iOS and iPadOS from one target.
+A web browser that writes no browser code. Lucarne is a `WKWebView` inside a SwiftUI toolbar, shipped for macOS, iOS and iPadOS from one target.
 
 ## Core Mechanic: WebKit Is the Browser
 
-Rendering, JavaScript, networking, cookies, back-forward cache, swipe navigation, reader-safe text sizing, password autofill and content blocking all live inside WebKit. Nook does not reimplement or wrap any of it. Each tab is one `WKWebView` owned by a `Page` object that also acts as its navigation delegate, mirroring five values into SwiftUI state: address, title, loading, can go back, can go forward.
+Rendering, JavaScript, networking, cookies, back-forward cache, swipe navigation, reader-safe text sizing, password autofill and content blocking all live inside WebKit. Lucarne does not reimplement or wrap any of it. Each tab is one `WKWebView` owned by a `Page` object that also acts as its navigation delegate, mirroring five values into SwiftUI state: address, title, loading, can go back, can go forward.
 
 ## Address Resolution
 
@@ -22,4 +22,4 @@ The one `#if` per concern rule: `WebView` is an `NSViewRepresentable` on Mac and
 
 ## What Is Deliberately Missing
 
-Bookmarks, history UI, downloads, extensions, sync, telemetry. Each is a feature, and each gets added when someone using Nook wants it, not before.
+Bookmarks, history UI, downloads, extensions, sync, telemetry. Each is a feature, and each gets added when someone using Lucarne wants it, not before.

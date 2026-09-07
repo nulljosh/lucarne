@@ -1,4 +1,4 @@
-# Nook roadmap
+# Lucarne roadmap
 
 ## Next
 - [ ] ASC name check (asc-name-creator), then app record + workflow ship-ios/ship-mac

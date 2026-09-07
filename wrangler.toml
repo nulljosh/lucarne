@@ -1,9 +1,9 @@
-name = "nook"
+name = "lucarne"
 compatibility_date = "2025-01-01"
 
 [assets]
 directory = "./landing"
 
 [[routes]]
-pattern = "nook.heyitsmejosh.com"
+pattern = "lucarne.heyitsmejosh.com"
 custom_domain = true

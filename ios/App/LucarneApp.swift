@@ -2,7 +2,7 @@ import SwiftUI
 import WebKit
 
 @main
-struct NookApp: App {
+struct LucarneApp: App {
     var body: some Scene {
         WindowGroup { BrowserView() }
         #if os(macOS)
