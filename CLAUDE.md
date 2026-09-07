@@ -6,7 +6,7 @@ v1.0.0, WebKit browser. One SwiftUI file, one xcodegen target for iOS and macOS.
 
 - `ios/App/LucarneApp.swift`: everything. `resolve()` turns input into a URL, `Page` wraps one `WKWebView` + nav delegate, `Tabs` holds pages, `PageView` is the chrome.
 - `ios/Tests/LucarneTests.swift`: resolve + tabs.
-- `landing/`: static page → lucarne.heyitsmejosh.com via `deploy.sh`.
+- `landing/`: the page IS a browser (bar + iframe, index.html); hero copy lives in start.html. Deployed via `deploy.sh`.
 
 ## Build
 
