@@ -1,7 +1,7 @@
 # Lucarne roadmap
 
 ## Next
-- [ ] ship-mac (macOS platform still to add to ASC 6809355192)
+- [x] iOS + macOS 1.0.0 submitted 2026-09-08
 - [ ] Screenshots (mac + iphone) for README and landing
 - [ ] kmp/ port for Android/Windows/Linux (see native fleet rollout)
 - [ ] Restore tabs across launches
