@@ -12,11 +12,11 @@
       "steps": [
         {
           "name": "bump",
-          "run": "asc xcode version edit --version \"$VERSION\" --build-number \"$(date +%Y%m%d%H%M)\""
+          "run": "asc xcode version edit --project ios/Lucarne.xcodeproj --version \"$VERSION\" --build-number \"$(date +%Y%m%d%H%M)\""
         },
         {
           "name": "archive",
-          "run": "asc xcode archive --project ios/Lucarne.xcodeproj --scheme Lucarne --archive-path .asc/artifacts/Lucarne.xcarchive --overwrite --xcodebuild-flag=-skipPackagePluginValidation --xcodebuild-flag=-allowProvisioningUpdates --output json"
+          "run": "asc xcode archive --project ios/Lucarne.xcodeproj --scheme Lucarne --archive-path .asc/artifacts/Lucarne.xcarchive --overwrite --xcodebuild-flag=-skipPackagePluginValidation --xcodebuild-flag=-allowProvisioningUpdates --xcodebuild-flag=-destination --xcodebuild-flag=generic/platform=iOS --output json"
         },
         {
           "name": "export",
