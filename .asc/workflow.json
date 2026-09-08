@@ -1,0 +1,33 @@
+// Release automation. Run: asc workflow run ship-ios VERSION:x.y.z
+{
+  "env": {
+    "IOS_APP_ID": "6809355192",
+    "VERSION": "",
+    "SUBMIT": "true"
+  },
+  "before_all": "asc auth status",
+  "workflows": {
+    "ship-ios": {
+      "description": "Bump, archive, upload, submit iOS",
+      "steps": [
+        {
+          "name": "bump",
+          "run": "asc xcode version edit --version \"$VERSION\" --build-number \"$(date +%Y%m%d%H%M)\""
+        },
+        {
+          "name": "archive",
+          "run": "asc xcode archive --project ios/Lucarne.xcodeproj --scheme Lucarne --archive-path .asc/artifacts/Lucarne.xcarchive --overwrite --xcodebuild-flag=-skipPackagePluginValidation --xcodebuild-flag=-allowProvisioningUpdates --output json"
+        },
+        {
+          "name": "export",
+          "run": "asc xcode export --archive-path .asc/artifacts/Lucarne.xcarchive --export-options ExportOptions-iOS.plist --xcodebuild-flag=-allowProvisioningUpdates --overwrite --ipa-path .asc/artifacts/Lucarne.ipa --output json"
+        },
+        {
+          "name": "publish",
+          "if": "SUBMIT",
+          "run": "asc publish appstore --app $IOS_APP_ID --ipa .asc/artifacts/Lucarne.ipa --version $VERSION --wait --submit --confirm --output json"
+        }
+      ]
+    }
+  }
+}

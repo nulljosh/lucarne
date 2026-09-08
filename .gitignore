@@ -1,3 +1,8 @@
 *.xcodeproj
 /build
 .DS_Store
+.asc/artifacts/
+.asc/signing/
+.asc/ss*/
+.asc/screenshots/
+.asc/validate.json
