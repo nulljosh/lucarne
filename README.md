@@ -1,8 +1,8 @@
+<img src="icon.svg" width="80" alt="">
+
 # lucarne
 
 ![version](https://img.shields.io/badge/version-v1.0.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) [![GitHub](https://img.shields.io/badge/GitHub-nulljosh%2Flucarne-black?logo=github)](https://github.com/nulljosh/lucarne)
-
-<img src="icon.svg" width="80" alt="">
 
 A web browser is a text field and a WebKit view. Everything else is opinion. A lucarne is a small window in a roof; this is a small window on the web.
 
